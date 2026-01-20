@@ -17,7 +17,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
     const match = description.match(/(\d+)\s*meses?/i);
     if (match) {
       const months = parseInt(match[1]);
-      if ([12, 24, 36, 48, 60].includes(months)) {
+      if ([6, 12, 24, 36, 48, 60].includes(months)) {
         return `${months}`;
       }
     }
