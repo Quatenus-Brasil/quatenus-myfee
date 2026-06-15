@@ -47,7 +47,7 @@ const DeviceSelectionModal = ({ show, onClose, calculatedData, contract, request
 
         try {
           const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/GetExternalContractsItemsDevices`, body);
-          const deviceCodes = response.data.Rows.map((device) => device.DeviceCode);
+          const deviceCodes = response.data.Rows.filter((device) => device.IsEnabled === true).map((device) => device.DeviceCode);
           return { itemId: item.itemId, devices: deviceCodes };
         } catch (error) {
           console.error("Erro ao buscar dispositivos para item:", item.QbmItemCode, error);
