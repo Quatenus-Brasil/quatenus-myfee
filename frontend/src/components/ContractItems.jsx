@@ -120,8 +120,8 @@ const ContractItems = ({ contractItems, contract, loading }) => {
     const calculatedData = selectedContractItems.map((item) => {
       const itemId = `${item.QbmItemCode}-${item.UnitPrice}`;
       const itemMonthsLeft = getItemMonthsLeft(item);
-      const quantity = quantities[itemId] || item.Quantity;
-      const percentage = percentages[itemId] || 50;
+      const quantity = quantities[itemId] ?? item.Quantity;
+      const percentage = percentages[itemId] ?? 50;
       const fee = fees[itemId] ?? 300;
       const fine = calculateFine(item, itemId, itemMonthsLeft);
       const total = calculateTotal(item, itemId, itemMonthsLeft);
@@ -201,13 +201,13 @@ const ContractItems = ({ contractItems, contract, loading }) => {
   };
 
   const calculateNetValue = (item, itemId) => {
-    const quantity = quantities[itemId] || item.Quantity;
+    const quantity = quantities[itemId] ?? item.Quantity;
     return quantity * item.UnitPrice;
   };
 
   const calculateFine = (item, itemId, monthsLeftData) => {
     const netValue = calculateNetValue(item, itemId);
-    const percentage = percentages[itemId] || 50;
+    const percentage = percentages[itemId] ?? 50;
     const totalMonths = monthsLeftData.totalMonths;
     return totalMonths * netValue * (percentage / 100);
   };
@@ -215,7 +215,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
   const calculateTotal = (item, itemId, monthsLeftData) => {
     const fine = calculateFine(item, itemId, monthsLeftData);
     const fee = fees[itemId] ?? 300;
-    const quantity = quantities[itemId] || item.Quantity;
+    const quantity = quantities[itemId] ?? item.Quantity;
 
     const totalFee = fee * quantity;
 
@@ -375,10 +375,8 @@ const ContractItems = ({ contractItems, contract, loading }) => {
                                   <input
                                     className="form-control form-control-sm"
                                     type="number"
-                                    value={percentages[itemId] || 50}
+                                    value={percentages[itemId] ?? 50}
                                     onChange={(e) => handlePercentageChange(itemId, e.target.value)}
-                                    min="0"
-                                    max="100"
                                     style={{ width: "60px" }}
                                   />
                                 </td>
