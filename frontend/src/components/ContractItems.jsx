@@ -36,9 +36,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
         : { totalMonths: 0, display: "N/A" };
     } else {
       const itemFidelityValue = parseInt(getItemFidelity(item));
-      return itemFidelityValue > 0 
-        ? getMonthsLeft(itemFidelityValue, contract.DocumentDateToGrid) 
-        : { totalMonths: 0, display: "N/A" };
+      return itemFidelityValue > 0 ? getMonthsLeft(itemFidelityValue, contract.DocumentDateToGrid) : { totalMonths: 0, display: "N/A" };
     }
   };
 
@@ -298,6 +296,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
                       <table className="table table-sm table-bordered table-hover">
                         <thead>
                           <tr>
+                            <th></th>
                             <th>
                               <p className="m-0 p-0">Itens do Contrato</p>
                             </th>
@@ -335,10 +334,14 @@ const ContractItems = ({ contractItems, contract, loading }) => {
 
                             return (
                               <tr key={itemId}>
+                                <td style={{ width: "5px" }}>
+                                  {item.IsEnabled === true ? <div className="green-circle"></div> : <div className="red-circle"></div>}
+                                </td>
                                 <td>
                                   <div className="row ps-3">{item.QbmItemCode}:</div>
                                   <div className="row ps-3" style={{ fontSize: "0.8rem", maxWidth: "400px" }}>
                                     {item.QbmItemDescription}
+                                    {item.IsEnabled === false && <span className=" m-0 p-0 text-danger">(Esse item está inativo!)</span>}
                                   </div>
                                 </td>
                                 <td style={{ width: "10px" }}>
