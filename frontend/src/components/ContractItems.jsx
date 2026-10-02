@@ -27,7 +27,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
 
   const getItemMonthsLeft = (item) => {
     if (item.QbmItemCode.includes("CHIP") || item.QbmItemCode.includes("WEB")) {
-      const chipFidelity = chipFidelities[`${item.QbmItemCode}-${item.UnitPrice}`];
+      const chipFidelity = chipFidelities[`${item.QbmItemCode}-${item.NetValue / item.Quantity}`];
       return chipFidelity
         ? {
             totalMonths: chipFidelity,
@@ -116,7 +116,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
 
   const handleNext = () => {
     const calculatedData = selectedContractItems.map((item) => {
-      const itemId = `${item.QbmItemCode}-${item.UnitPrice}`;
+      const itemId = `${item.QbmItemCode}-${item.NetValue}`;
       const itemMonthsLeft = getItemMonthsLeft(item);
       const quantity = quantities[itemId] ?? item.Quantity;
       const percentage = percentages[itemId] ?? 50;
@@ -200,7 +200,11 @@ const ContractItems = ({ contractItems, contract, loading }) => {
 
   const calculateNetValue = (item, itemId) => {
     const quantity = quantities[itemId] ?? item.Quantity;
-    return quantity * item.UnitPrice;
+    const originalQuantity = Number(item.Quantity);
+
+    if (!originalQuantity) return 0;
+
+    return (Number(item.NetValue) / originalQuantity) * quantity;
   };
 
   const calculateFine = (item, itemId, monthsLeftData) => {
@@ -304,7 +308,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
                               <p className="m-0 p-0">QNT</p>
                             </th>
                             <th>
-                              <p className="m-0 p-0">Pr. Unit.</p>
+                              <p className="m-0 p-0">Val. Líq. Unit.</p>
                             </th>
                             <th>
                               <p className="m-0 p-0">Fidelidade Restante</p>
@@ -329,7 +333,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
                         </thead>
                         <tbody>
                           {selectedContractItems.map((item) => {
-                            const itemId = `${item.QbmItemCode}-${item.UnitPrice}`;
+                            const itemId = `${item.QbmItemCode}-${item.NetValue}`;
                             const itemMonthsLeft = getItemMonthsLeft(item);
 
                             return (
@@ -355,7 +359,7 @@ const ContractItems = ({ contractItems, contract, loading }) => {
                                   />
                                 </td>
                                 <td style={{ width: "100px" }}>
-                                  {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.UnitPrice)}
+                                  {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.NetValue / item.Quantity)}
                                 </td>
                                 <td>
                                   {item.QbmItemCode.includes("CHIP") || item.QbmItemCode.includes("WEB") ? (

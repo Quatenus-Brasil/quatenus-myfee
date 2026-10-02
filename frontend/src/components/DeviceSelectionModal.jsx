@@ -196,7 +196,7 @@ const DeviceSelectionModal = ({ show, onClose, calculatedData, contract, request
 
         for (let i = 0; i < item.quantity; i++) {
           tableData.push([
-            new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.UnitPrice),
+            new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.NetValue / item.Quantity),
             `${item.percentage}%`,
             new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.finePerUnit),
             new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.fee),
@@ -206,7 +206,7 @@ const DeviceSelectionModal = ({ show, onClose, calculatedData, contract, request
 
         autoTable(pdf, {
           startY: yPosition,
-          head: [["Pr. Unitário", "Multa Contratual (%)", "Multa", "Taxa de Finalização", "Placa do Veículo"]],
+          head: [["Val. Líq. Unit.", "Multa Contratual (%)", "Multa", "Taxa de Finalização", "Placa do Veículo"]],
           body: tableData,
           theme: "grid",
           styles: {
@@ -342,7 +342,7 @@ const DeviceSelectionModal = ({ show, onClose, calculatedData, contract, request
                           <thead>
                             <tr>
                               <th>
-                                <p className="m-0 p-0">Pr. Unitário</p>
+                                <p className="m-0 p-0">Val. Líq. Unit.</p>
                               </th>
                               <th>
                                 <p className="m-0 p-0 link-qorange" title={import.meta.env.VITE_TITLE_MULTA}>
@@ -369,7 +369,7 @@ const DeviceSelectionModal = ({ show, onClose, calculatedData, contract, request
                                   {new Intl.NumberFormat("pt-BR", {
                                     style: "currency",
                                     currency: "BRL",
-                                  }).format(item.UnitPrice)}
+                                  }).format(item.NetValue / item.Quantity)}
                                 </td>
                                 <td className="align-middle text-center">{item.percentage}%</td>
                                 <td className="align-middle">
